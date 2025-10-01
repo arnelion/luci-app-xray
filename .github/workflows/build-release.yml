@@ -1,4 +1,4 @@
-name: Build and Release
+bin: Build and Release
 
 on:
   push:
@@ -58,8 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch}}-packages
-          path: bin/packages/${{ matrix.arch }}/packages/*.ipk
-
+          path: "${{ github.workspace }}"/*.ipk
 
   notify:
     name: Notify Release Publish
