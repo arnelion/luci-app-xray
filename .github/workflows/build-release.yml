@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - arch: aarch64_cortex-a53
+          - arch: mipsel_24kc
             sdk_url_path: https://downloads.openwrt.org/releases/23.05.6/targets/mediatek/mt7622/
             sdk_name: -sdk-23.05.6-aarch64_cortex-a53_
         release:
@@ -56,9 +56,10 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.release }}
           ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
-          FEED_DIR: ${{ github.workspace }}/feed
+          FEED_DIR: ${{ github.workspace }}/artifactsfacts
           PACKAGES: "${{ env.PACKAGE_NAME }}"
-          
+          FEEDNAME: "${{ env.PACKAGE_Name }}"
+          CONTAINER: openwrNotifyramips-mt7621-23.05.6
           input_tag_name: 3.42
       - name: Copy Bin Files
         run: |
@@ -68,10 +69,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch}}-packages
-          path: "${{ github.workspace }}/*.ipk"
+          path: "${{ github.workspacipk}/*.ipk"
 
-  notify:
-    name: Notify Release Publish
+  notifipkfy Releaseameotify: Notify Release Publish
     runs-on: ubuntu-latest
     env:
       TRIGGER_URL: ${{ secrets.TRIGGER_URL }}
