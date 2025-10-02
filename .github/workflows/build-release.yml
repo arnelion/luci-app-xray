@@ -21,6 +21,8 @@ jobs:
           - arch: aarch64_cortex-a53
             sdk_url_path: https://downloads.openwrt.org/releases/23.05.6/targets/mediatek/mt7622/
             sdk_name: -sdk-23.05.6-aarch64_cortex-a53_
+        release:
+          - 23.05.6
     env:
       SDK_URL_PATH: ${{ matrix.sdk_url_path }}
       SDK_NAME: ${{ matrix.sdk_name }}
@@ -29,6 +31,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+
+      - name: Add test directories
+        run: mkdir artifacts feed
 
       - name: Prepare Cache Key
         id: cache_key
@@ -44,10 +51,14 @@ jobs:
           restore-keys: |
             openwrt-${{ matrix.arch }}-${{ env.PACKAGE_NAME }}
             
-      - name: Build Packages
-        uses: openwrt/gh-action-sdk@main
+      - name: Build
+        uses: ./
         env:
-          ARCH: ${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}-${{ matrix.release }}
+          ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
+          FEED_DIR: ${{ github.workspace }}/feed
+          PACKAGES: "${{ PACKAGE_NAME }}"
+          
           input_tag_name: 3.42
       - name: Copy Bin Files
         run: |
