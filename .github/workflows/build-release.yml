@@ -19,8 +19,8 @@ jobs:
       matrix:
         include:
           - arch: mipsel_24kc
-            sdk_url_path: https://downloads.openwrt.org/releases/23.05.6/targets/mediatek/mt7622/
-            sdk_name: -sdk-23.05.6-aarch64_cortex-a53_
+            sdk_url_path: https://downloads.openwrt.org/releases/23.05.6/targets/ramips/mt7621/
+            sdk_name: -sdk-23.05.6-ramips-mt76217_
         release:
           - 23.05.6
     env:
@@ -59,7 +59,7 @@ jobs:
           FEED_DIR: ${{ github.workspace }}/artifactsfacts
           PACKAGES: "${{ env.PACKAGE_NAME }}"
           FEEDNAME: "${{ env.PACKAGE_Name }}"
-          CONTAINER: "openwrtEsdkdk:ramips-mt7621-23.05.6"
+          CONTAINER: "openwrt/sdk:ramips-mt7621-23.05.6"
           input_tag_name: 3.42
       - name: Copy Bin Files
         run: |
@@ -69,9 +69,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch}}-packages
-          path: "${{ github.workspacipk}/*.ipk"
+          path: "${{ github.workspacipk}/artifacts/*.ipk"
 
-  notifipkfy Releaseameotify: Notify Release Publish
+  notify:
+    name: Notify Release Publish
     runs-on: ubuntu-latest
     env:
       TRIGGER_URL: ${{ secrets.TRIGGER_URL }}
@@ -89,3 +90,4 @@ jobs:
               -H "Authorization: Bearer $TRIGGER_TOKEN" \
               -d "{\"event\":\"release\",\"repository\":\"${{ github.repository }}\",\"ref\":\"${{ github.ref }}\"}" \
               "$TRIGGER_URL" || true
+              
