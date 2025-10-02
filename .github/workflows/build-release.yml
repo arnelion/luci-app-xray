@@ -57,7 +57,7 @@ jobs:
           ARCH: ${{ matrix.arch }}-${{ matrix.release }}
           ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
           FEED_DIR: ${{ github.workspace }}/feed
-          PACKAGES: "${{ PACKAGE_NAME }}"
+          PACKAGES: "${{ env.PACKAGE_NAME }}"
           
           input_tag_name: 3.42
       - name: Copy Bin Files
